@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite" >
+	<test name="accessibility" enabled="true">
+		<classes>
+			<class name="com.perfecto.sampleproject.accessibiilty.Android_Accessibility" />
+		</classes>
+	</test> <!-- Test -->
+</suite> <!-- Suite -->

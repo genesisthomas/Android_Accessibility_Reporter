@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "type": "ERROR",
+        "message": "View falls below the minimum recommended size for touch targets. Minimum touch target size is 48x48dp. Actual size is 40x40dp.",
+        "package": "com.sec.android.app.popupcalculator",
+        "class": "android.widget.ImageView",
+        "contentDescription": "History",
+        "leftX": 135,
+        "rightX": 275,
+        "topY": 1132,
+        "bottomY": 1272
+    },
+    {
+        "id": 2,	
+        "type": "ERROR",
+        "message": "View falls below the minimum recommended size for touch targets. Minimum touch target size is 48x48dp. Actual size is 40x40dp.",
+        "package": "com.sec.android.app.popupcalculator",
+        "class": "android.widget.ImageView",
+        "contentDescription": "Unit converter",
+        "leftX": 345,
+        "rightX": 485,
+        "topY": 1132,
+        "bottomY": 1272
+    },
+    {
+        "id": 3,
+        "type": "ERROR",
+        "message": "View falls below the minimum recommended size for touch targets. Minimum touch target size is 48x48dp. Actual size is 40x40dp.",
+        "package": "com.sec.android.app.popupcalculator",
+        "class": "android.widget.ImageView",
+        "contentDescription": "Scientific mode",
+        "leftX": 555,
+        "rightX": 695,
+        "topY": 1132,
+        "bottomY": 1272
+    },
+    {
+        "id": 4,
+        "type": "ERROR",
+        "message": "View falls below the minimum recommended size for touch targets. Minimum touch target size is 48x48dp. Actual size is 40x40dp.",
+        "package": "com.sec.android.app.popupcalculator",
+        "class": "android.widget.ImageView",
+        "contentDescription": "Backspace",
+        "leftX": 1165,
+        "rightX": 1305,
+        "topY": 1132,
+        "bottomY": 1272
+    },
+    {
+        "id": 5,
+        "type": "ERROR",
+        "message": "Editable view should not have a contentDescription",
+        "package": "com.sec.android.app.popupcalculator",
+        "class": "",
+        "contentDescription": "Calculator input field",
+        "leftX": 135,
+        "rightX": 1347,
+        "topY": 150,
+        "bottomY": 708
+    }
+]
