@@ -12,12 +12,6 @@ There are several prerequisite dependencies you should install on your machine p
 
 * [Maven](https://maven.apache.org/)
 
-* Android studio
-
-* Local Appium Server running at http://127.0.0.1 ,  port: 4723
-
-* Download the OS specific chromedriver into libs folder of the project and update the  webdriver.chrome.driver as applicable
-
 Eclipse users should also install:
 
 1. [Maven Plugin](http://marketplace.eclipse.org/content/m2e-connector-maven-dependency-plugin)
@@ -43,15 +37,11 @@ TestNG Plugin is built-in in the IntelliJ IDEA, from version 7 onwards.
 **********************
 # Getting Started
 
-* Download the OS specific chromedriver into libs folder of the project and update the webdriver.chrome.driver system path where ever applicable
-
-* Local Appium Server should be running at http://127.0.0.1 ,  port: 4723
-
 
 ## Running sample as is
 
 
-* Open PerfectoAppium.java and PerfectoSelenium.java</p>
+* Open Android_Accessibility.java</p>
 
 * Search for the below line and replace `<<cloud name>>` with your perfecto cloud name (e.g. demo) or pass it as maven properties: `-DcloudName=<<cloud name>>`</br>  
 		&nbsp;&nbsp;	&nbsp;&nbsp; String cloudName = `"<<cloud name>>"`;
@@ -74,17 +64,16 @@ Note: Refer to official documentation on how to execute from eclipse / IntelliJ.
 		install
 		-DcloudName=${cloudName}
 		-DsecurityToken=${securityToken}
-		-DtestngXmlFile=testng_perfecto.xml
+		-DtestngXmlFile=testng.xml
 </p>
 
-* Maven will automatically kick start the parallel execution of different examples inside perfecto package in parallel if `-DtestngXmlFile=testng.xml` is passed as maven properties, if you want to run only perfecto scripts just pass this: `-DtestngXmlFile=testng_perfecto.xml` as maven properties. (this is the default behaviour) </p>
 
 * CI dashboard integration can be performed by supplying the below properties to top-level Maven Targets:
 
 		clean
 		install
 		-DcloudName=${cloudName}
-		-DtestngXmlFile=testng_perfecto.xml
+		-DtestngXmlFile=testng.xml
 		-DsecurityToken=${securityToken}
 		-Dreportium-job-name=${JOB_NAME} 
 		-Dreportium-job-number=${BUILD_NUMBER} 
