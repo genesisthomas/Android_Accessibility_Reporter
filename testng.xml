@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Suite" >
-	<test name="accessibility" enabled="true">
+<suite name="Suite" parallel="tests">
+	<test name="accessibility_android_fail" enabled="true">
 		<classes>
-			<class name="com.perfecto.sampleproject.accessibiilty.Android_Accessibility" />
+			<class
+				name="com.perfecto.sampleproject.accessibiilty.Android_Accessibility" />
+		</classes>
+	</test>
+	<test name="accessibility_android_pass" enabled="true">
+		<classes>
+			<class
+				name="com.perfecto.sampleproject.accessibiilty.Android_Pass_scenario" />
+		</classes>
+	</test>
+	<test name="accessibility_iOS" enabled="false">
+		<classes>
+			<class
+				name="com.perfecto.sampleproject.accessibiilty.IOS_Accessibility" />
 		</classes>
 	</test> <!-- Test -->
 </suite> <!-- Suite -->

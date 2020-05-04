@@ -1,19 +1,16 @@
 package com.perfecto.sampleproject.accessibiilty;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.By;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import com.perfecto.reportium.client.ReportiumClient;
@@ -28,44 +25,34 @@ import com.perfecto.sampleproject.Utils.Utils;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.ios.IOSDriver;
 
 
-public class Android_Accessibility {
+public class IOS_Accessibility {
 	AppiumDriver driver;
 	ReportiumClient reportiumClient;
-	ThreadLocal executionId = new ThreadLocal();  
-	String scriptName = "Android_apps";
-	String appPackage[]  = {"com.sec.android.app.popupcalculator", "com.samsung.android.dialer", "com.android.vending"};
-	String tag[] = {"calculator", "dialer", "playstore"};
-
-
-	@BeforeSuite
-	public void suiteSetup() throws IOException {
-		FileUtils.forceDelete(new File(System.getProperty("user.dir") + File.separator + "Accessibility" ));
-	}   
-
 	@Test
 	public void appiumTest() throws Exception {
 		System.out.println("Run started");
 		String browserName = "";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
 		//Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>>  
-				String cloudName = "<<cloud name>>";
+		String cloudName = "<<cloud name>>";
 		//Replace <<security token>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
-				String securityToken = "<<security token>>";
+		String securityToken = "<<security token>>";
 
 		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
-		capabilities.setCapability("model", "Galaxy S10");
-		capabilities.setCapability("platform", "Android");
+		capabilities.setCapability("model", "iPhone-8");
+		String app = "com.apple.calculator";
+		String tag = "calculator";
+		String json = "/Users/genesisthomas/eclipse-workspace/Accessibility_Testing/Accessibility/calc_accessibility_report.json";
+		capabilities.setCapability("platform", "iOS");
 		capabilities.setCapability("pureAppiumBehaviour", false);
-		capabilities.setCapability("appPackage", "com.sec.android.app.popupcalculator");
+		capabilities.setCapability("bundleId", app);
 		capabilities.setCapability("automationName", "Appium");
-		capabilities.setCapability("scriptName", scriptName);
-		try {
-			driver = new AndroidDriver(new URL("https://" + Utils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
-		}catch(Exception e){
-			throw new RuntimeException("Unable to create driver. " + e.getMessage());
-		}
+		capabilities.setCapability("scriptName", "IOS_Accessibility");
+
+		driver = new IOSDriver(new URL("https://" + Utils.fetchCloudName(cloudName)  + ".perfectomobile.com/nexperience/perfectomobile/wd/hub"), capabilities);
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 		PerfectoExecutionContext perfectoExecutionContext = null;
 		if(System.getProperty("reportium-job-name") != null) {
@@ -83,25 +70,8 @@ public class Android_Accessibility {
 					.build();
 		}
 		reportiumClient = new ReportiumClientFactory().createPerfectoReportiumClient(perfectoExecutionContext);
-		reportiumClient.testStart(scriptName, new TestContext(scriptName));
-		int i = 0;
-		for (i = 0; i < appPackage.length; i++) { 
-			String appName = appPackage[i]; 
-			String tagName = tag[i]; 
-			audit(appName, tagName);
-		}
-
-		//post condition:
-		try {
-			if(System.getProperty("accessibility_failed").equalsIgnoreCase("true")){
-				org.testng.Assert.fail("Accessibility errors exists!");
-			}
-		}catch(Exception e) {}
-	}
-
-
-	private void audit(String app, String tag) throws Exception {
-		reportiumClient.stepStart("Open App: " + app);
+		reportiumClient.testStart("IOS_Accessibility", new TestContext("accessibility"));
+		reportiumClient.stepStart("Open App");
 		// close the app in case it is running from previous iteration
 		try {
 			Map<String, Object> params2 = null;
@@ -119,20 +89,21 @@ public class Android_Accessibility {
 		reportiumClient.stepEnd();
 
 		reportiumClient.stepStart("Check Accessibility Audit");
-		driver.getPageSource().toString();
+
 		params = new HashMap<>();
 		params.put("tag", tag);
 		driver.executeScript("mobile:checkAccessibility:audit", params);
 		reportiumClient.stepEnd();
 
-		reportiumClient.stepStart("Take local screenshot for " + tag);
+		reportiumClient.stepStart("Begin Accessibility verifier for " + tag);
 		Utils.take_screenshot(driver, reportiumClient, tag);
-		reportiumClient.stepEnd();
+
+
 	}
 
 
 	@AfterMethod
-	public void afterMethod(ITestResult result) throws Exception {
+	public void afterMethod(ITestResult result) {
 		TestResult testResult = null;
 		if(result.getStatus() == result.SUCCESS) {
 			testResult = TestResultFactory.createSuccess();
@@ -143,15 +114,9 @@ public class Android_Accessibility {
 		reportiumClient.testStop(testResult);
 		String reportURL = reportiumClient.getReportUrl();
 		System.out.println(reportURL);
-
-		Capabilities capabilities = driver.getCapabilities();
-		executionId.set((String) capabilities.getCapability("executionId"));
-		String deviceId = (String) capabilities.getCapability("deviceName");
-
 		driver.close();
 		driver.quit();
-		Utils.accessibility_highlighter(driver, reportiumClient, executionId.get().toString(), scriptName, deviceId, tag, appPackage[0]);
+		//	TODO: WIP once iOS feature is ready
 	}
-
 
 }

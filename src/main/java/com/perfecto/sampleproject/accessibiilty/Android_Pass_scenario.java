@@ -1,19 +1,15 @@
 package com.perfecto.sampleproject.accessibiilty;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.Platform;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.Test;
 
 import com.perfecto.reportium.client.ReportiumClient;
@@ -30,35 +26,28 @@ import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 
 
-public class Android_Accessibility {
+public class Android_Pass_scenario {
 	AppiumDriver driver;
 	ReportiumClient reportiumClient;
 	ThreadLocal executionId = new ThreadLocal();  
-	String scriptName = "Android_apps";
-	String appPackage[]  = {"com.sec.android.app.popupcalculator", "com.samsung.android.dialer", "com.android.vending"};
-	String tag[] = {"calculator", "dialer", "playstore"};
-
-
-	@BeforeSuite
-	public void suiteSetup() throws IOException {
-		FileUtils.forceDelete(new File(System.getProperty("user.dir") + File.separator + "Accessibility" ));
-	}   
-
+	String scriptName = getClass().getSimpleName();
+	String appPackage  = "io.perfecto.expense.tracker.hybrid";
+	String[] tag = {"expense"};
 	@Test
 	public void appiumTest() throws Exception {
 		System.out.println("Run started");
 		String browserName = "";
 		DesiredCapabilities capabilities = new DesiredCapabilities(browserName, "", Platform.ANY);
 		//Replace <<cloud name>> with your perfecto cloud name (e.g. demo) or pass it as maven properties: -DcloudName=<<cloud name>>  
-				String cloudName = "<<cloud name>>";
+		String cloudName = "<<cloud name>>";
 		//Replace <<security token>> with your perfecto security token or pass it as maven properties: -DsecurityToken=<<SECURITY TOKEN>>  More info: https://developers.perfectomobile.com/display/PD/Generate+security+tokens
-				String securityToken = "<<security token>>";
+		String securityToken = "<<security token>>";
 
 		capabilities.setCapability("securityToken", Utils.fetchSecurityToken(securityToken));
-		capabilities.setCapability("model", "Galaxy S10");
+		capabilities.setCapability("model", "Galaxy S6");
 		capabilities.setCapability("platform", "Android");
 		capabilities.setCapability("pureAppiumBehaviour", false);
-		capabilities.setCapability("appPackage", "com.sec.android.app.popupcalculator");
+		capabilities.setCapability("appPackage", appPackage);
 		capabilities.setCapability("automationName", "Appium");
 		capabilities.setCapability("scriptName", scriptName);
 		try {
@@ -84,12 +73,7 @@ public class Android_Accessibility {
 		}
 		reportiumClient = new ReportiumClientFactory().createPerfectoReportiumClient(perfectoExecutionContext);
 		reportiumClient.testStart(scriptName, new TestContext(scriptName));
-		int i = 0;
-		for (i = 0; i < appPackage.length; i++) { 
-			String appName = appPackage[i]; 
-			String tagName = tag[i]; 
-			audit(appName, tagName);
-		}
+		audit(appPackage, tag[0]);
 
 		//post condition:
 		try {
@@ -150,7 +134,7 @@ public class Android_Accessibility {
 
 		driver.close();
 		driver.quit();
-		Utils.accessibility_highlighter(driver, reportiumClient, executionId.get().toString(), scriptName, deviceId, tag, appPackage[0]);
+		Utils.accessibility_highlighter(driver, reportiumClient, executionId.get().toString(), scriptName, deviceId, tag, appPackage);
 	}
 
 

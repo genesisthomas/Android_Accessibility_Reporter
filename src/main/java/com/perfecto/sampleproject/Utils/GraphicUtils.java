@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
+import com.perfecto.sampleproject.Utils.rgbUtils;
 import javax.imageio.ImageIO;
 
 import com.perfecto.reportium.client.ReportiumClient;
@@ -43,7 +43,7 @@ public class GraphicUtils {
 			BufferedImage slice = image.getSubimage(u.getX(),u.getY(),u.getWidth(),u.getHeight());
 			ImageIO.write(slice, "jpg", new File(u.getFilename()));
 		} catch (IOException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 
